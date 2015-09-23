@@ -1,7 +1,7 @@
 int X2 = 0, Y1 = 0, X1 = 0, threshold = 15;
 
 //can move to other file, or remove
-void deadZoneCheck();
+void deadZoneCheck()
 {
 	//Create "deadzone" for Y1/Ch3
 	if(abs(vexRT[Ch3]) > threshold)
