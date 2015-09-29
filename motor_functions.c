@@ -1,4 +1,3 @@
-//#include "new.c"
 int X2 = 0, Y1 = 0, X1 = 0, threshold = 15;
 
 //can move to other file, or remove
@@ -84,7 +83,6 @@ void launcher()
 //Turntable
 void turntable()
 {
-
 		if(vexRT[Btn5UXmtr2] == 0 && vexRT[Btn5DXmtr2] == 0){
 			motor[TurntableLeft] = 0;
 			motor[TurntableRight] = 0;
@@ -97,4 +95,51 @@ void turntable()
 			motor[TurntableLeft] = -100;
 			motor[TurntableRight] = -100;
 		}
+}
+
+
+void grab()
+{
+	motor[Outtake] = -100;
+	motor[Intake] = -100;
+}
+
+//Positive forward, Negative backward
+void driveStraight(int power)
+{
+	motor[FrontRightDrive] = power;
+	motor[BackRightDrive] =  power;
+	motor[FrontLeftDrive] = power;
+	motor[BackLeftDrive] =  power;
+}
+
+//Positive power = right, Negative = Left
+void strafe(int power)
+{
+	motor[FrontRightDrive] = -power;
+	motor[BackRightDrive] =  power;
+	motor[FrontLeftDrive] = power;
+	motor[BackLeftDrive] =  -power;
+}
+
+//Positive power = right, Negative = left
+void rotate(int power)
+{
+	motor[FrontRightDrive] = -power;
+	motor[BackRightDrive] =  -power;
+	motor[FrontLeftDrive] = power;
+	motor[BackLeftDrive] =  power;
+}
+
+//Again, + right, - left
+void turnLauncher(int power)
+{
+	motor[TurnTableLeft] = power;
+	motor[TurnTableRight] = power;
+}
+
+void launch(int power)
+{
+	motor[LauncherLeft] = -power;
+	motor[LauncherRight] = -power;
 }
