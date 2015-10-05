@@ -18,46 +18,7 @@
 #include "motor_functions.c"
 #include "smartMotorLib\SmartMotorLib.c"
 #include "autonomous.c"
-
-task lcdtask()
-{
-	float leftBackSpeed;
-	float leftFrontSpeed;
-	float rightBackSpeed;
-	float rightFrontSpeed;
-
-	float lb = 0;
-	float rb = 0;
-	float lf = 0;
-	float rf = 0;
-
-	while(1 == 1)
-	{
-
-
-		leftBackSpeed = SmartMotorGetSpeed(port2)   / 60 *12.56 ; //2r*pi * 60 seconds
-		rightBackSpeed = SmartMotorGetSpeed(port3)  / 60 *12.56 ;
-		leftFrontSpeed = SmartMotorGetSpeed(port6)  / 60 *12.56 ;
-		rightFrontSpeed = SmartMotorGetSpeed(port5) / 60 *12.56 ;
-
-		lb = lb + leftBackSpeed / 1000;
-		rb = rb + rightBackSpeed / 1000;
-		lf = lf + leftFrontSpeed / 1000;
-		rf = rf + rightFrontSpeed / 1000;
-
-		clearLCDLine(0);
-		clearLCDLine(1);
-		displayLCDString(0,0,"front:");
-		displayNextLCDNumber(lf);
-		displayNextLCDString(",");
-		displayNextLCDNumber(rf);
-		displayLCDString(1,0,"back:");
-		displayNextLCDNumber(lb);
-		displayNextLCDString(",");
-		displayNextLCDNumber(rb);
-		wait1Msec(1);
-	}
-}
+#include "field_centric_control.c"
 
 task usercontrol()
 {
