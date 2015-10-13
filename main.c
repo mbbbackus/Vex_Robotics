@@ -1,3 +1,4 @@
+#pragma config(Sensor, in3,    BaseGyro,       sensorGyro)
 #pragma config(Sensor, dgtl1,  RightEncoder,   sensorQuadEncoder)
 #pragma config(Sensor, dgtl3,  LeftEncoder,    sensorQuadEncoder)
 #pragma config(Motor,  port1,           TurntableLeft, tmotorVex393_HBridge, openLoop)
@@ -25,6 +26,7 @@
 
 task usercontrol()
 {
+	SmartMotorRun();
 	startTask(lcdtask);
 	while(1 == 1)
 	{
@@ -32,6 +34,7 @@ task usercontrol()
 		intake();
 		launcher();
 		turntable();
+		dirButtons();
 	}
 }
 
@@ -46,7 +49,9 @@ void pre_auton()
 	//Ensure in future that gear ratio of high speed = 3.0
 	SmartMotorsSetEncoderGearing(port6,3.0);
 	SmartMotorPtcMonitorEnable();
-	SmartMotorRun();
+
+	setLeftBlue();
+	SensorValue[BaseGyro] = 0;
 }
 
 task autonomous()

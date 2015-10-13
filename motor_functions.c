@@ -57,25 +57,53 @@ void intake() // 1 forward, 0 backward
 //Loop this too
 void launcher()
 {
-		if(vexRT[Btn7UXmtr2] == 0 && vexRT[Btn7RXmtr2] == 0 && vexRT[Btn7DXmtr2] == 0 && vexRT[Btn7LXmtr2] == 0){
+	// Highest -------> Lowest
+	// 7U 7R 7D 7L 8U 8R 8D 8L
+
+		//None pressed
+		if(vexRT[Btn7UXmtr2] == 0 && vexRT[Btn7RXmtr2] == 0 && vexRT[Btn7DXmtr2] == 0 && vexRT[Btn7LXmtr2] == 0 && vexRT[Btn8UXmtr2] == 0 && vexRT[Btn8RXmtr2] == 0 && vexRT[Btn8DXmtr2] == 0 && vexRT[Btn8LXmtr2] == 0){
 			motor[LauncherLeft] = 0;
 			motor[LauncherRight] = 0;
 		}
-		if(vexRT[Btn7UXmtr2] == 1 && vexRT[Btn7RXmtr2] == 0 && vexRT[Btn7DXmtr2] == 0 && vexRT[Btn7LXmtr2] == 0){
+		//7U
+		if(vexRT[Btn7UXmtr2] == 1 && vexRT[Btn7RXmtr2] == 0 && vexRT[Btn7DXmtr2] == 0 && vexRT[Btn7LXmtr2] == 0 && vexRT[Btn8UXmtr2] == 0 && vexRT[Btn8RXmtr2] == 0 && vexRT[Btn8DXmtr2] == 0 && vexRT[Btn8LXmtr2] == 0){
 			motor[LauncherLeft] = -90;
 			motor[LauncherRight] = -90;
 		}
-		if(vexRT[Btn7UXmtr2] == 0 && vexRT[Btn7RXmtr2] == 1 && vexRT[Btn7DXmtr2] == 0 && vexRT[Btn7LXmtr2] == 0){
+		//7R
+		if(vexRT[Btn7UXmtr2] == 0 && vexRT[Btn7RXmtr2] == 1 && vexRT[Btn7DXmtr2] == 0 && vexRT[Btn7LXmtr2] == 0 && vexRT[Btn8UXmtr2] == 0 && vexRT[Btn8RXmtr2] == 0 && vexRT[Btn8DXmtr2] == 0 && vexRT[Btn8LXmtr2] == 0){
+			motor[LauncherLeft] = -85;
+			motor[LauncherRight] = -85;
+		}
+		//7D
+		if(vexRT[Btn7UXmtr2] == 0 && vexRT[Btn7RXmtr2] == 0 && vexRT[Btn7DXmtr2] == 1 && vexRT[Btn7LXmtr2] == 0 && vexRT[Btn8UXmtr2] == 0 && vexRT[Btn8RXmtr2] == 0 && vexRT[Btn8DXmtr2] == 0 && vexRT[Btn8LXmtr2] == 0){
 			motor[LauncherLeft] = -80;
 			motor[LauncherRight] = -80;
 		}
-		if(vexRT[Btn7UXmtr2] == 0 && vexRT[Btn7RXmtr2] == 0 && vexRT[Btn7DXmtr2] == 1 && vexRT[Btn7LXmtr2] == 0){
+		//7L
+		if(vexRT[Btn7UXmtr2] == 0 && vexRT[Btn7RXmtr2] == 0 && vexRT[Btn7DXmtr2] == 0 && vexRT[Btn7LXmtr2] == 1 && vexRT[Btn8UXmtr2] == 0 && vexRT[Btn8RXmtr2] == 0 && vexRT[Btn8DXmtr2] == 0 && vexRT[Btn8LXmtr2] == 0){
+			motor[LauncherLeft] = -75;
+			motor[LauncherRight] = -75;
+		}
+		//8U
+		if(vexRT[Btn7UXmtr2] == 0 && vexRT[Btn7RXmtr2] == 0 && vexRT[Btn7DXmtr2] == 0 && vexRT[Btn7LXmtr2] == 0 && vexRT[Btn8UXmtr2] == 1 && vexRT[Btn8RXmtr2] == 0 && vexRT[Btn8DXmtr2] == 0 && vexRT[Btn8LXmtr2] == 0){
 			motor[LauncherLeft] = -70;
 			motor[LauncherRight] = -70;
 		}
-		if(vexRT[Btn7UXmtr2] == 0 && vexRT[Btn7RXmtr2] == 0 && vexRT[Btn7DXmtr2] == 0 && vexRT[Btn7LXmtr2] == 1){
+		//8R
+		if(vexRT[Btn7UXmtr2] == 0 && vexRT[Btn7RXmtr2] == 0 && vexRT[Btn7DXmtr2] == 0 && vexRT[Btn7LXmtr2] == 0 && vexRT[Btn8UXmtr2] == 0 && vexRT[Btn8RXmtr2] == 1 && vexRT[Btn8DXmtr2] == 0 && vexRT[Btn8LXmtr2] == 0){
+			motor[LauncherLeft] = -65;
+			motor[LauncherRight] = -65;
+		}
+		//8D
+		if(vexRT[Btn7UXmtr2] == 0 && vexRT[Btn7RXmtr2] == 0 && vexRT[Btn7DXmtr2] == 0 && vexRT[Btn7LXmtr2] == 0 && vexRT[Btn8UXmtr2] == 0 && vexRT[Btn8RXmtr2] == 0 && vexRT[Btn8DXmtr2] == 1 && vexRT[Btn8LXmtr2] == 0){
 			motor[LauncherLeft] = -60;
 			motor[LauncherRight] = -60;
+		}
+		//8L
+		if(vexRT[Btn7UXmtr2] == 0 && vexRT[Btn7RXmtr2] == 0 && vexRT[Btn7DXmtr2] == 0 && vexRT[Btn7LXmtr2] == 0 && vexRT[Btn8UXmtr2] == 0 && vexRT[Btn8RXmtr2] == 0 && vexRT[Btn8DXmtr2] == 0 && vexRT[Btn8LXmtr2] == 1){
+			motor[LauncherLeft] = -55;
+			motor[LauncherRight] = -55;
 		}
 
 }
@@ -98,10 +126,10 @@ void turntable()
 }
 
 
-void grab()
+void grab(int power)
 {
-	motor[Outtake] = -100;
-	motor[Intake] = -100;
+	motor[Outtake] = -power;
+	motor[Intake] = -power;
 }
 
 //Positive forward, Negative backward

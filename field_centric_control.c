@@ -1,7 +1,11 @@
-int fieldWidth = 140.5; //inches
-int robotXPos = 0;
-int robotYPos = 0;
-int robotDir = 0;
+float fieldWidth = 140.5; //inches
+float robotXPos = 0;
+float robotYPos = 0;
+float robotDir = 0;
+
+float xInit = 0;
+float yInit = 0;
+float dirInit = 0;
 
 float leftBackSpeed = 0 ;
 float leftFrontSpeed = 0;
@@ -13,29 +17,29 @@ float rb = 0;
 float lf = 0;
 float rf = 0;
 
-
-void changePos(int diffX, int diffY, int diffDir)
-{
-	robotXPos = robotXPos + diffX;
-	robotYPos = robotYPos + diffY;
-	robotDir = robotDir + diffDir;
-}
-
 void setLeftBlue()
 {
-	changePos(12, 36, 45);
+	xInit = 12;
+	yInit = 36;
+	dirInit = 45;
 }
 void setRightBlue()
 {
-	changePos(36, 12, 45);
+	xInit = 36;
+	yInit = 12;
+	dirInit = 45;
 }
 void setLeftRed()
 {
-	changePos(104, 12, 135);
+	xInit = 104;
+	yInit = 12;
+	dirInit = 135;
 }
 void setRightRed()
 {
-	changePos(128, 36, 135);
+	xInit = 128;
+	yInit = 36;
+	dirInit = 135;
 }
 
 int calcWheelChange()
@@ -64,11 +68,21 @@ int calcWheelChange()
 		//shaft encoder has 90 ticks
 		lb = lb + SensorValue[LeftEncoder]  / 90.0 * 8.64 ; //2.75*pi = 8.64
 		lf = lf + SensorValue[LeftEncoder]  / 90.0 * 8.64 ;
-		rb = rb + SensorValue[RightEncoder] / 90.0 * 8.64 ;
-		rf = rf + SensorValue[RightEncoder] / 90.0 * 8.64 ;
+
+		//right sensor is inverted
+		rb = rb - SensorValue[RightEncoder] / 90.0 * 8.64 ;
+		rf = rf - SensorValue[RightEncoder] / 90.0 * 8.64 ;
 		return 1;
 	}
 	return 0;
+}
+
+void dirButtons()
+{
+	if(vexRT[Btn7U] == 1){
+		dirInit = 0;
+	}
+	else{}
 }
 
 task lcdtask()
@@ -78,16 +92,18 @@ task lcdtask()
 	{
 			if(calcWheelChange() == 1)
 			{
+				robotXPos = xInit - ((lb+lf+rb+rf)/4.0)
+				robotYPos = yInit;
+				if((dirInit + (SensorValue[BaseGyro]/10)) < 0) robotDir = 360 + (dirInit + (SensorValue[BaseGyro]/10));
+				else robotDir = dirInit + SensorValue[BaseGyro]/10;
 				clearLCDLine(0);
 				clearLCDLine(1);
-				displayLCDString(0,0,"front: ");
-				displayNextLCDNumber(lf);
-				displayNextLCDString(",");
-				displayNextLCDNumber(rf);
-				displayLCDString(1,0,"back: ");
-				displayNextLCDNumber(lb);
-				displayNextLCDString(",");
-				displayNextLCDNumber(rb);
+				displayLCDString(0,0,"X,Y: ");
+				displayNextLCDNumber(robotXPos);
+				displayNextLCDString(" , ");
+				displayNextLCDNumber(robotYPos);
+				displayLCDString(1,0,"Angle: ");
+				displayNextLCDNumber(robotDir);
 				wait1Msec(100);
 		}
 	}
