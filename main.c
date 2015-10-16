@@ -50,7 +50,7 @@ void pre_auton()
 	SmartMotorsSetEncoderGearing(port6,3.0);
 	SmartMotorPtcMonitorEnable();
 
-	setLeftBlue();
+	setLeftRed();
 	SensorValue[BaseGyro] = 0;
 }
 

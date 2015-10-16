@@ -7,6 +7,10 @@ float xInit = 0;
 float yInit = 0;
 float dirInit = 0;
 
+float xChange = 0;
+float yChange = 0;
+float dirChange = 0;
+
 float leftBackSpeed = 0 ;
 float leftFrontSpeed = 0;
 float rightBackSpeed = 0;
@@ -61,6 +65,7 @@ int calcWheelChange()
 			rf = rf + (rightFrontSpeed / 10.0);
 			return 1;
 		}
+		else
 		return 0;
 	}
 	if(SensorValue[RightEncoder] != 0 || SensorValue[LeftEncoder] != 0)
@@ -77,6 +82,45 @@ int calcWheelChange()
 	return 0;
 }
 
+void calcXYComponents()
+{
+	//Check if moving forward
+	if(lb > 0 && rb > 0 && lf > 0 && rf > 0)
+	{
+		xChange = (lb + lf + rb + rf) / 4.0 * cosDegrees(robotDir);
+		yChange = (lb + lf + rb + rf) / 4.0 * sinDegrees(robotDir);
+	}
+	//Check if moving backward
+	else if(lb < 0 && rb < 0 && lf < 0 && rf < 0)
+	{
+		xChange = (lb + lf + rb + rf) / 4.0 * cosDegrees(robotDir);
+		yChange = (lb + lf + rb + rf) / 4.0 * sinDegrees(robotDir);
+	}
+	//Check if turning left
+	else if(lb < 0 && rb > 0 && lf < 0 && rf > 0)
+	{
+		xChange = (lb + lf + rb + rf) / 4.0 * cosDegrees(robotDir);
+		yChange = (lb + lf + rb + rf) / 4.0 * sinDegrees(robotDir);
+	}
+	//Check if turning right
+	else if(lb > 0 && rb < 0 && lf > 0 && rf < 0)
+	{
+		xChange = (lb + lf + rb + rf) / 4.0 * cosDegrees(robotDir);
+		yChange = (lb + lf + rb + rf) / 4.0 * sinDegrees(robotDir);
+	}
+	//Check if strafing left
+	else if(lb < 0 && rb > 0 && lf > 0 && rf < 0)
+	{
+		xChange = (abs(lb) + abs(lf) + abs(rb) + abs(rf)) / 4.0 * cosDegrees(robotDir + 90.0);
+
+	}
+	//Check if strafing right
+	else if(lb > 0 && rb < 0 && lf < 0 && rf > 0)
+	{
+		xChange = (abs(lb) + abs(lf) + abs(rb) + abs(rf)) / 4.0 * sinDegrees(robotDir - 90.0);
+	}
+}
+
 void dirButtons()
 {
 	if(vexRT[Btn7U] == 1){
@@ -90,21 +134,19 @@ task lcdtask()
 
 	while(1 == 1)
 	{
-			if(calcWheelChange() == 1)
-			{
-				robotXPos = xInit - ((lb+lf+rb+rf)/4.0)
-				robotYPos = yInit;
-				if((dirInit + (SensorValue[BaseGyro]/10)) < 0) robotDir = 360 + (dirInit + (SensorValue[BaseGyro]/10));
-				else robotDir = dirInit + SensorValue[BaseGyro]/10;
-				clearLCDLine(0);
-				clearLCDLine(1);
-				displayLCDString(0,0,"X,Y: ");
-				displayNextLCDNumber(robotXPos);
-				displayNextLCDString(" , ");
-				displayNextLCDNumber(robotYPos);
-				displayLCDString(1,0,"Angle: ");
-				displayNextLCDNumber(robotDir);
-				wait1Msec(100);
-		}
+		if(calcWheelChange() == 1) wait1Msec(100);
+		calcXYComponents();
+		robotXPos = xInit + xChange;
+		robotYPos = yInit + yChange;
+		if((dirInit + (SensorValue[BaseGyro]/10)) < 0) robotDir = 360 + (dirInit + (SensorValue[BaseGyro]/10));
+		else robotDir = dirInit + SensorValue[BaseGyro]/10;
+		clearLCDLine(0);
+		clearLCDLine(1);
+		displayLCDString(0,0,"X,Y: ");
+		displayNextLCDNumber(robotXPos);
+		displayNextLCDString(" , ");
+		displayNextLCDNumber(robotYPos);
+		displayLCDString(1,0,"Angle: ");
+		displayNextLCDNumber(robotDir);
 	}
 }
