@@ -27,7 +27,6 @@
 task usercontrol()
 {
 	SmartMotorRun();
-	startTask(lcdtask);
 	while(1 == 1)
 	{
 		mdrive();
@@ -50,8 +49,10 @@ void pre_auton()
 	SmartMotorsSetEncoderGearing(port6,3.0);
 	SmartMotorPtcMonitorEnable();
 
-	setLeftRed();
 	SensorValue[BaseGyro] = 0;
+	calcDirectionDifference();
+	setLeftRed();
+	startTask(lcdtask);
 }
 
 task autonomous()
