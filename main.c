@@ -19,10 +19,10 @@
 
 #include "Vex_Competition_Includes.c"
 
-#include "motor_functions.c"
 #include "smartMotorLib\SmartMotorLib.c"
-#include "autonomous.c"
 #include "field_centric_control.c"
+#include "motor_functions.c"
+#include "autonomous.c"
 
 task usercontrol()
 {
@@ -30,10 +30,11 @@ task usercontrol()
 	while(1 == 1)
 	{
 		mdrive();
-		intake();
+		checkintake();
 		launcher();
 		turntable();
 		dirButtons();
+
 	}
 }
 
@@ -48,10 +49,8 @@ void pre_auton()
 	//Ensure in future that gear ratio of high speed = 3.0
 	SmartMotorsSetEncoderGearing(port6,3.0);
 	SmartMotorPtcMonitorEnable();
-
-	SensorValue[BaseGyro] = 0;
+	setLeftBlue();
 	calcDirectionDifference();
-	setLeftRed();
 	startTask(lcdtask);
 }
 

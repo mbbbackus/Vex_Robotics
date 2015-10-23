@@ -1,31 +1,43 @@
 //Continuously updated values
-float robotXPos = 0;
-float robotYPos = 0;
-float robotDir = 0;
+double robotXPos = 0.0;
+double robotYPos = 0.0;
+double robotDir = 0.0;
+
+bool blue = false;
+bool red  = false;
+
+double redGoalX = 12.0;
+double redGoalY = 128.0;
+
+double blueGoalX = 128.0;
+double blueGoalY = 128.0;
+
+double robotGoalXDiff = 0;
+double robotGoalYDiff = 0;
 
 //The relative difference between the actual direction and gyro value
-float dirDifference = 0;
+double dirDifference = 0.0;
 
 //Initial position values
-float xInit = 0;
-float yInit = 0;
-float dirInit = 0;
+double xInit = 0.0;
+double yInit = 0.0;
+double dirInit = 0.0;
 
 //Position Deltas
-float xChange = 0;
-float yChange = 0;
+double xChange = 0.0;
+double yChange = 0.0;
 
 //Speed values updated by integrated motor encoders
-float leftBackSpeed = 0 ;
-float leftFrontSpeed = 0;
-float rightBackSpeed = 0;
-float rightFrontSpeed = 0;
+double leftBackSpeed = 0.0;
+double leftFrontSpeed = 0.0;
+double rightBackSpeed = 0.0;
+double rightFrontSpeed = 0.0;
 
 //Change in distance of each wheel in inches
-float lb = 0;
-float rb = 0;
-float lf = 0;
-float rf = 0;
+double lb = 0.0;
+double rb = 0.0;
+double lf = 0.0;
+double rf = 0.0;
 
 //Four functions for each starting position
 void setLeftBlue()
@@ -33,24 +45,28 @@ void setLeftBlue()
 	xInit = 12;
 	yInit = 36;
 	dirInit = 45;
+	blue = true;
 }
 void setRightBlue()
 {
 	xInit = 36;
 	yInit = 12;
 	dirInit = 45;
+	blue = true;
 }
 void setLeftRed()
 {
 	xInit = 104;
 	yInit = 12;
 	dirInit = 135;
+	red = false;
 }
 void setRightRed()
 {
 	xInit = 128;
 	yInit = 36;
 	dirInit = 135;
+	red = false;
 }
 
 //Compares initial gyro value to what initial dir should be
@@ -78,16 +94,12 @@ int calcWheelChange()
 	//Checks if Robot is moving and motors are powered
 	if(abs(leftBackSpeed) > 1 || abs(rightBackSpeed) > 1 || abs(leftFrontSpeed) > 1 || abs(rightFrontSpeed) > 1)//Making sure enough power to actually move
 	{
-		if(SensorValue[RightEncoder] != 0 || SensorValue[LeftEncoder] != 0)//Checking if robot actually moving w/ shaft encoders
-		{
-			//Adds inches moved to each lb... value
-			lb = leftBackSpeed   / 10.0; //Divided by ten because the encoder checks RPM every tenth of a second
-			rb = rightBackSpeed  / 10.0;
-			lf = leftFrontSpeed  / 10.0;
-			rf = rightFrontSpeed / 10.0;
-			return 1;
-		}
-		else return 0;
+		//Adds inches moved to each lb... value
+		lb = leftBackSpeed   / 10.0; //Divided by ten because the encoder checks RPM every tenth of a second
+		rb = rightBackSpeed  / 10.0;
+		lf = leftFrontSpeed  / 10.0;
+		rf = rightFrontSpeed / 10.0;
+		return 1;
 	}
 	//Check if robot is coasting (motors aren't working but wheels are turning)
 	if(SensorValue[RightEncoder] != 0 || SensorValue[LeftEncoder] != 0)
@@ -147,6 +159,22 @@ void calcXYComponents()
 	}
 }
 
+double calcLauncherPower(){
+	if(red){
+		robotGoalXDiff = redGoalX - robotXPos;
+		robotGoalYDiff = redGoalY - robotYPos;
+	}
+	if(blue){
+		robotGoalXDiff = blueGoalX - robotXPos;
+		robotGoalYDiff = blueGoalY - robotYPos;
+	}
+	//field diagonal length is 181
+	double xPow = pow(robotGoalXDiff, 2);
+	double yPow = pow(robotGoalYDiff, 2);
+	return pow(xPow + yPow, 0.5) / 182.0;
+
+}
+
 //Update values
 void updatePositionValues()
 {
@@ -154,14 +182,15 @@ void updatePositionValues()
 		calcXYComponents();
 		robotXPos = robotXPos + xChange;
 		robotYPos = robotYPos + yChange;
-		robotDir = (SensorValue[BaseGyro] / 10.0) - dirDifference;
 	}
+	robotDir = (SensorValue[BaseGyro] / 10.0) - dirDifference;
+	if(robotDir < 0) robotDir += 360;
 }
 
 //Calibration function - resets initial direction value to 0
 void dirButtons()
 {
-	if(vexRT[Btn7U] == 1){
+	if(vexRT[Btn7UXmtr2] == 1){
 		calcDirectionDifference();
 	}
 	else{}
@@ -180,7 +209,8 @@ task lcdtask()
 		displayNextLCDString(" , ");
 		displayNextLCDNumber(robotYPos);
 		displayLCDString(1,0,"Angle: ");
-		displayNextLCDNumber(robotDir);
+		//displayNextLCDNumber(robotDir);
+		displayNextLCDNumber(calcLauncherPower());
 		wait1Msec(100);
 	}
 }
