@@ -61,36 +61,27 @@ void launcher()
 	// 7U 7R 7D 7L 8U 8R 8D 8L
 
 		//None pressed
-		if(vexRT[Btn7U] == 0 && vexRT[Btn7R] == 0 && vexRT[Btn8U] == 0 && vexRT[Btn8L] == 0){
+		if(vexRT[Btn7L] == 0 && vexRT[Btn7U] == 0 && vexRT[Btn7R] == 0 && vexRT[Btn7D] == 0){
 			motor[LauncherLeft] = 0;
 			motor[LauncherRight] = 0;
 		}
-		//7U
-		if(vexRT[Btn7U] == 1 && vexRT[Btn7R] == 0 && vexRT[Btn8U] == 0 && vexRT[Btn8L] == 0){
+		//7L -- Lowest
+		if(vexRT[Btn7L] == 1 && vexRT[Btn7U] == 0 && vexRT[Btn7R] == 0 && vexRT[Btn7D] == 0){
 			motor[LauncherLeft] = -55;
 			motor[LauncherRight] = -55;
 		}
-		//7R
-		if(vexRT[Btn7U] == 0 && vexRT[Btn7R] == 1 && vexRT[Btn8U] == 0 && vexRT[Btn8L] == 0){
+		//7U -- Medium
+		if(vexRT[Btn7L] == 0 && vexRT[Btn7U] == 1 && vexRT[Btn7R] == 0 && vexRT[Btn7D] == 0){
 			motor[LauncherLeft] = -70;
 			motor[LauncherRight] = -70;
 		}
-		//8U
-		if(vexRT[Btn7U] == 0 && vexRT[Btn7R] == 0 && vexRT[Btn8U] == 1 && vexRT[Btn8L] == 0){
-			motor[LauncherLeft] = -80;
-			motor[LauncherRight] = -80;
+		//7R -- High
+		if(vexRT[Btn7L] == 0 && vexRT[Btn7U] == 0 && vexRT[Btn7R] == 1 && vexRT[Btn7D] == 0){
+			motor[LauncherLeft] = -127;
+			motor[LauncherRight] = -127;
 		}
-		//8L
-		if(vexRT[Btn7U] == 0 && vexRT[Btn7R] == 0 && vexRT[Btn8U] == 0 && vexRT[Btn8L] == 1){
-			motor[LauncherLeft] = -90;
-			motor[LauncherRight] = -90;
-		}
-
-		if(vexRT[Btn7D] == 0){
-			motor[LauncherLeft] = 0;
-			motor[LauncherRight] = 0;
-		}
-		if(vexRT[Btn7D] == 1){
+		//7D -- Field-Centric
+		if(vexRT[Btn7L] == 0 && vexRT[Btn7U] == 0 && vexRT[Btn7R] == 0 && vexRT[Btn7D] == 1){
 			motor[LauncherLeft] = -1 * calcLauncherPower();
 			motor[LauncherRight] = -1 * calcLauncherPower();
 		}

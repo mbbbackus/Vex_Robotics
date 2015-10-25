@@ -43,30 +43,46 @@ double rf = 0.0;
 void setLeftBlue()
 {
 	xInit = 12;
+	robotXPos = 12;
+
 	yInit = 36;
+	robotYPos = 36;
+
 	dirInit = 45;
 	blue = true;
 }
 void setRightBlue()
 {
 	xInit = 36;
+	robotXPos = 36;
+
 	yInit = 12;
+	robotYPos = 12;
+
 	dirInit = 45;
 	blue = true;
 }
 void setLeftRed()
 {
 	xInit = 104;
+	robotXPos = 104;
+
 	yInit = 12;
+	robotYPos = 12;
+
 	dirInit = 135;
-	red = false;
+	red = true;
 }
 void setRightRed()
 {
 	xInit = 128;
+	robotXPos = 128;
+
 	yInit = 36;
+	robotYPos = 36;
+
 	dirInit = 135;
-	red = false;
+	red = true;
 }
 
 //Compares initial gyro value to what initial dir should be
@@ -171,7 +187,7 @@ double calcLauncherPower(){
 	//field diagonal length is 181
 	double xPow = pow(robotGoalXDiff, 2);
 	double yPow = pow(robotGoalYDiff, 2);
-	return pow(xPow + yPow, 0.5) / 182.0;
+	return pow(xPow + yPow, 0.5) / 182.0 * 100;
 
 }
 
@@ -188,12 +204,33 @@ void updatePositionValues()
 }
 
 //Calibration function - resets initial direction value to 0
-void dirButtons()
+void calibrateButtons()
 {
-	if(vexRT[Btn7UXmtr2] == 1){
+	//8D -- Angle
+	if(vexRT[Btn8D] == 1){
 		calcDirectionDifference();
 	}
-	else{}
+	//8L -- At Blue Goal
+	if(vexRT[Btn8L] == 1){
+		robotXPos = xInit;
+		robotYPos = yInit;
+	}
+	//8R -- At Goal
+	if(vexRT[Btn8R] == 1){
+		if(blue){
+			robotXPos = 112.5;
+			robotYPos = 112.5;
+		}
+		if(red){
+			robotXPos = 22.5;
+			robotYPos = 112.5;
+		}
+	}
+	//8U -- Robot in center field
+	if(vexRT[Btn8U] == 1){
+		robotXPos = 67.5;
+		robotYPos = 67.5;
+	}
 }
 
 task lcdtask()
@@ -209,8 +246,7 @@ task lcdtask()
 		displayNextLCDString(" , ");
 		displayNextLCDNumber(robotYPos);
 		displayLCDString(1,0,"Angle: ");
-		//displayNextLCDNumber(robotDir);
-		displayNextLCDNumber(calcLauncherPower());
+		displayNextLCDNumber(robotDir);
 		wait1Msec(100);
 	}
 }

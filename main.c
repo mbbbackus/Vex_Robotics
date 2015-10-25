@@ -33,7 +33,7 @@ task usercontrol()
 		checkintake();
 		launcher();
 		turntable();
-		dirButtons();
+		calibrateButtons();
 
 	}
 }
