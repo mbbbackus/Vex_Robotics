@@ -6,11 +6,11 @@ double robotDir = 0.0;
 bool blue = false;
 bool red  = false;
 
-double redGoalX = 12.0;
-double redGoalY = 128.0;
+double redGoalX = 0.0;
+double redGoalY = 135.0;
 
-double blueGoalX = 128.0;
-double blueGoalY = 128.0;
+double blueGoalX = 135.0;
+double blueGoalY = 135.0;
 
 double robotGoalXDiff = 0;
 double robotGoalYDiff = 0;
@@ -22,6 +22,8 @@ double dirDifference = 0.0;
 double xInit = 0.0;
 double yInit = 0.0;
 double dirInit = 0.0;
+
+double distance = 0;
 
 //Position Deltas
 double xChange = 0.0;
@@ -187,7 +189,19 @@ double calcLauncherPower(){
 	//field diagonal length is 181
 	double xPow = pow(robotGoalXDiff, 2);
 	double yPow = pow(robotGoalYDiff, 2);
-	return pow(xPow + yPow, 0.5) / 182.0 * 100;
+	distance = pow(xPow + yPow, 0.5);
+
+	//Launcher values are not arbitrary, based off of geogebra
+	if(distance < 70.0){
+		return 50.0;
+	}
+	else if(distance < 108.0 && distance >= 70.0){
+		return 4 * pow(distance - 66, 0.5) + 50;
+	}
+	else if(distance < 182.0 && distance >= 108.0){
+		return 4 * pow(distance - 66, 0.5) + 54;
+	}
+	else return 100;
 
 }
 
@@ -231,6 +245,7 @@ void calibrateButtons()
 		robotXPos = 67.5;
 		robotYPos = 67.5;
 	}
+
 }
 
 task lcdtask()
