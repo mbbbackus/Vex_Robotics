@@ -27,11 +27,11 @@
 task usercontrol()
 {
 	SmartMotorRun();
+	startTask(launcher);
 	while(1 == 1)
 	{
 		mdrive();
 		checkintake();
-		launcher();
 		turntable();
 		calibrateButtons();
 

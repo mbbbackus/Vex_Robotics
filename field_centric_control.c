@@ -196,10 +196,10 @@ double calcLauncherPower(){
 		return 50.0;
 	}
 	else if(distance < 108.0 && distance >= 70.0){
-		return 4 * pow(distance - 66, 0.5) + 50;
+		return 2.2 * pow(distance - 66, 0.5) + 50.0;
 	}
 	else if(distance < 182.0 && distance >= 108.0){
-		return 4 * pow(distance - 66, 0.5) + 54;
+		return 3.0 * pow(distance - 66, 0.5) + 50.0;
 	}
 	else return 100;
 
@@ -224,7 +224,7 @@ void calibrateButtons()
 	if(vexRT[Btn8D] == 1){
 		calcDirectionDifference();
 	}
-	//8L -- At Blue Goal
+	//8L -- At Starting point
 	if(vexRT[Btn8L] == 1){
 		robotXPos = xInit;
 		robotYPos = yInit;
@@ -261,7 +261,7 @@ task lcdtask()
 		displayNextLCDString(" , ");
 		displayNextLCDNumber(robotYPos);
 		displayLCDString(1,0,"Angle: ");
-		displayNextLCDNumber(robotDir);
+		displayNextLCDNumber(calcLauncherPower());
 		wait1Msec(100);
 	}
 }

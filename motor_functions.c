@@ -55,11 +55,11 @@ void checkintake() // 1 forward, 0 backward
 }
 
 //Loop this too
-void launcher()
+task launcher()
 {
 	// Highest -------> Lowest
 	// 7U 7R 7D 7L 8U 8R 8D 8L
-
+	while(1==1){
 		//None pressed
 		if(vexRT[Btn7L] == 0 && vexRT[Btn7U] == 0 && vexRT[Btn7R] == 0 && vexRT[Btn7D] == 0){
 			motor[LauncherLeft] = 0;
@@ -67,8 +67,8 @@ void launcher()
 		}
 		//7L -- Lowest
 		if(vexRT[Btn7L] == 1 && vexRT[Btn7U] == 0 && vexRT[Btn7R] == 0 && vexRT[Btn7D] == 0){
-			motor[LauncherLeft] = -55;
-			motor[LauncherRight] = -55;
+			motor[LauncherLeft] = -50;
+			motor[LauncherRight] = -50;
 		}
 		//7U -- Medium
 		if(vexRT[Btn7L] == 0 && vexRT[Btn7U] == 1 && vexRT[Btn7R] == 0 && vexRT[Btn7D] == 0){
@@ -81,11 +81,18 @@ void launcher()
 			motor[LauncherRight] = -127;
 		}
 		//7D -- Field-Centric
-		if(vexRT[Btn7L] == 0 && vexRT[Btn7U] == 0 && vexRT[Btn7R] == 0 && vexRT[Btn7D] == 1){
-			motor[LauncherLeft] = -1 * calcLauncherPower();
-			motor[LauncherRight] = -1 * calcLauncherPower();
+		if(vexRT[Btn7L] == 0 && vexRT[Btn7U] == 0 && vexRT[Btn7R] == 0 && vexRT[Btn7D] == 1 ){
+			ClearTimer(T1);
+			while(time1[T1] < 1000){
+				motor[LauncherLeft] = -80;
+				motor[LauncherRight] = -80;
+			}
+			while(vexRT[Btn7D] == 1){
+				motor[LauncherLeft] = -1 * calcLauncherPower();
+				motor[LauncherRight] = -1 * calcLauncherPower();
+			}
 		}
-
+	}
 
 }
 
