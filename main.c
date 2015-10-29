@@ -1,3 +1,4 @@
+#pragma config(Sensor, in1,    Potent,         sensorPotentiometer)
 #pragma config(Sensor, in3,    BaseGyro,       sensorGyro)
 #pragma config(Sensor, dgtl1,  RightEncoder,   sensorQuadEncoder)
 #pragma config(Sensor, dgtl3,  LeftEncoder,    sensorQuadEncoder)
@@ -49,7 +50,8 @@ void pre_auton()
 	//Ensure in future that gear ratio of high speed = 3.0
 	SmartMotorsSetEncoderGearing(port6,3.0);
 	SmartMotorPtcMonitorEnable();
-	setLeftBlue();
+	if(SensorValue[Potent] < 1000) setRed();
+	else if(SensorValue[Potent] > 3000) setBlue();
 	calcDirectionDifference();
 	startTask(lcdtask);
 }

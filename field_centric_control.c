@@ -5,6 +5,7 @@ double robotDir = 0.0;
 
 bool blue = false;
 bool red  = false;
+char* color = "none";
 
 double redGoalX = 0.0;
 double redGoalY = 135.0;
@@ -42,7 +43,7 @@ double lf = 0.0;
 double rf = 0.0;
 
 //Four functions for each starting position
-void setLeftBlue()
+void setBlue()
 {
 	xInit = 12;
 	robotXPos = 12;
@@ -53,35 +54,13 @@ void setLeftBlue()
 	dirInit = 45;
 	blue = true;
 }
-void setRightBlue()
-{
-	xInit = 36;
-	robotXPos = 36;
-
-	yInit = 12;
-	robotYPos = 12;
-
-	dirInit = 45;
-	blue = true;
-}
-void setLeftRed()
+void setRed()
 {
 	xInit = 104;
 	robotXPos = 104;
 
 	yInit = 12;
 	robotYPos = 12;
-
-	dirInit = 135;
-	red = true;
-}
-void setRightRed()
-{
-	xInit = 128;
-	robotXPos = 128;
-
-	yInit = 36;
-	robotYPos = 36;
 
 	dirInit = 135;
 	red = true;
@@ -221,16 +200,16 @@ void updatePositionValues()
 void calibrateButtons()
 {
 	//8D -- Angle
-	if(vexRT[Btn8D] == 1){
+	if(vexRT[Btn8DXmtr2] == 1){
 		calcDirectionDifference();
 	}
 	//8L -- At Starting point
-	if(vexRT[Btn8L] == 1){
+	if(vexRT[Btn8LXmtr2] == 1){
 		robotXPos = xInit;
 		robotYPos = yInit;
 	}
 	//8R -- At Goal
-	if(vexRT[Btn8R] == 1){
+	if(vexRT[Btn8RXmtr2] == 1){
 		if(blue){
 			robotXPos = 112.5;
 			robotYPos = 112.5;
@@ -241,7 +220,7 @@ void calibrateButtons()
 		}
 	}
 	//8U -- Robot in center field
-	if(vexRT[Btn8U] == 1){
+	if(vexRT[Btn8UXmtr2] == 1){
 		robotXPos = 67.5;
 		robotYPos = 67.5;
 	}
@@ -253,6 +232,16 @@ task lcdtask()
 
 	while(1 == 1)
 	{
+		if(SensorValue[Potent] < 1000){
+			color = "red";
+			red = true;
+			blue = false;
+		}
+		else if(SensorValue[Potent] > 3000){
+			color = "blue";
+			red = false;
+			blue = true;
+	}
 		updatePositionValues();
 		clearLCDLine(0);
 		clearLCDLine(1);
@@ -260,8 +249,10 @@ task lcdtask()
 		displayNextLCDNumber(robotXPos);
 		displayNextLCDString(" , ");
 		displayNextLCDNumber(robotYPos);
-		displayLCDString(1,0,"Angle: ");
+		displayLCDString(1,0,"Pow: ");
 		displayNextLCDNumber(calcLauncherPower());
+		displayNextLCDString(" , ");
+		displayNextLCDString(color);
 		wait1Msec(100);
 	}
 }
