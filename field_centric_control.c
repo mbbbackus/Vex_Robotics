@@ -1,18 +1,23 @@
 //Continuously updated values
+
+//initializes robot positions and direction on the field
 double robotXPos = 0.0;
 double robotYPos = 0.0;
 double robotDir = 0.0;
 
+//color is the current color of the robot's starting position
 bool blue = false;
 bool red  = false;
 char* color = "none";
 
+//Constant values for the positions relative to the field
 double redGoalX = 0.0;
 double redGoalY = 135.0;
 
 double blueGoalX = 135.0;
 double blueGoalY = 135.0;
 
+//difference of the robot's position on the x and y axis
 double robotGoalXDiff = 0;
 double robotGoalYDiff = 0;
 
@@ -24,9 +29,10 @@ double xInit = 0.0;
 double yInit = 0.0;
 double dirInit = 0.0;
 
+//distance between the robot and the goal
 double distance = 0;
 
-//Position Deltas
+//Position Deltas - how much has the robot moved in 1/10 of a second?
 double xChange = 0.0;
 double yChange = 0.0;
 
@@ -37,12 +43,13 @@ double rightBackSpeed = 0.0;
 double rightFrontSpeed = 0.0;
 
 //Change in distance of each wheel in inches
+//amount each wheel moves distance wise in 1/10 of a second
 double lb = 0.0;
 double rb = 0.0;
 double lf = 0.0;
 double rf = 0.0;
 
-//Four functions for each starting position
+//Two functions that set the location of the robot at blue or red square
 void setBlue()
 {
 	xInit = 12;
@@ -75,6 +82,7 @@ void calcDirectionDifference()
 	else dirDifference = (SensorValue[BaseGyro] / 10.0) - dirInit;
 }
 
+//checks to make sure that the robot is moving
 //updates changes in wheel distances, checks integrated motor encoder values
 //returns 1 if robot is actually moving (not just motors) else returns 0
 int calcWheelChange()
@@ -113,6 +121,7 @@ int calcWheelChange()
 	return 0;
 }
 
+//Checks to see if the robot is moving forward, moving backward, turning left, turning right, strafing right or left
 //Calculates the change in X and Y at instant using inches traveled and trigonometric functions
 void calcXYComponents()
 {
@@ -156,6 +165,7 @@ void calcXYComponents()
 	}
 }
 
+//Calculates the amount of power the launcher needs to have the best chance of getting in the goal
 double calcLauncherPower(){
 	if(red){
 		robotGoalXDiff = redGoalX - robotXPos;
@@ -181,10 +191,9 @@ double calcLauncherPower(){
 		return 3.0 * pow(distance - 66, 0.5) + 50.0;
 	}
 	else return 100;
-
 }
 
-//Update values
+//function that updates the position of the robot on the field
 void updatePositionValues()
 {
 	if(calcWheelChange() == 1){
@@ -196,7 +205,8 @@ void updatePositionValues()
 	if(robotDir < 0) robotDir += 360;
 }
 
-//Calibration function - resets initial direction value to 0
+//Calibration function for the buttons on the controller 
+//resets initial direction value to 0
 void calibrateButtons()
 {
 	//8D -- Angle
@@ -227,6 +237,7 @@ void calibrateButtons()
 
 }
 
+//displays values on the rear lcd screen for the field centric control program while the robot is on the field
 task lcdtask()
 {
 
