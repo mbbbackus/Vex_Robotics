@@ -1,6 +1,6 @@
 int X2 = 0, Y1 = 0, X1 = 0, threshold = 15;
 
-//can move to other file, or remove
+//calculates the analog stick's axis to identify how far it is from the center
 void deadZoneCheck()
 {
 	//Create "deadzone" for Y1/Ch3
@@ -20,7 +20,8 @@ void deadZoneCheck()
 		X2 = 0;
 }
 
-//Loop Forever
+//basic drive function for the mechanum wheels
+//loops continuously
 void mdrive()
 {
 	deadZoneCheck();
@@ -32,7 +33,8 @@ void mdrive()
 	motor[BackLeftDrive] =  Y1 + X2 - X1;
 }
 
-//Loop this
+//function that controls the intake
+//loops continuously as the button is pressed
 void checkintake() // 1 forward, 0 backward
 {
 
@@ -51,7 +53,8 @@ void checkintake() // 1 forward, 0 backward
 	}
 }
 
-//Loop this too
+//function that controls the power of the launcher
+//loops continuosly as the button is pressed
 task launcher()
 {
 	// Highest -------> Lowest
@@ -138,7 +141,7 @@ task launcher()
 
 }
 
-//Turntable
+//function that allows for the control of the turntable
 void turntable()
 {
 	if(vexRT[Btn5UXmtr2] == 0 && vexRT[Btn5DXmtr2] == 0){
@@ -152,13 +155,13 @@ void turntable()
 	}
 }
 
-
+//function controls the power of the intake
 void grab(int power)
 {
 	motor[Intake] = -power;
 }
 
-//Positive forward, Negative backward
+//Positive values drive the robot forward, Negative values drive it backward
 void driveStraight(int power)
 {
 	motor[FrontRightDrive] = power;
@@ -167,7 +170,7 @@ void driveStraight(int power)
 	motor[BackLeftDrive] =  power;
 }
 
-//Positive power = right, Negative = Left
+//positive values allow the robot to strafe right, Negative values allow the robot to strafe left
 void strafe(int power)
 {
 	motor[FrontRightDrive] = -power;
@@ -176,7 +179,7 @@ void strafe(int power)
 	motor[BackLeftDrive] =  -power;
 }
 
-//Positive power = right, Negative = left
+//Positive values rotate the robot right, Negative values rotate the robot left
 void rotate(int power)
 {
 	motor[FrontRightDrive] = -power;
@@ -185,12 +188,14 @@ void rotate(int power)
 	motor[BackLeftDrive] =  power;
 }
 
-//Again, + right, - left
+//Positive values rotate the launcher right, Negative values rotate the launcher left 
 void turnLauncher(int power)
 {
 	motor[Turntable] = power;
 }
 
+//function that allows for the user to launch a ball at a given power
+//potentially for use in autonomous
 void launch(int power)
 {
 	motor[LauncherLeftOutside] =  -power;
