@@ -42,6 +42,8 @@ double rb = 0.0;
 double lf = 0.0;
 double rf = 0.0;
 
+//double launcherPower = 60;
+
 //Four functions for each starting position
 void setBlue()
 {
@@ -171,16 +173,7 @@ double calcLauncherPower(){
 	distance = pow(xPow + yPow, 0.5);
 
 	//Launcher values are not arbitrary, based off of geogebra
-	if(distance < 70.0){
-		return 50.0;
-	}
-	else if(distance < 108.0 && distance >= 70.0){
-		return 2.2 * pow(distance - 66, 0.5) + 50.0;
-	}
-	else if(distance < 182.0 && distance >= 108.0){
-		return 3.0 * pow(distance - 66, 0.5) + 50.0;
-	}
-	else return 100;
+	return (distance / 8.0 + 32.5)
 
 }
 
@@ -241,7 +234,16 @@ task lcdtask()
 			color = "blue";
 			red = false;
 			blue = true;
-	}
+		}
+		//Commented out code segment for incrementing launcher power
+		/*if(vexRT[Btn6U] == 1){
+			launcherPower += 1;
+			wait1Msec(500);
+		}
+		else if(vexRT[Btn6D] == 1){
+			launcherPower -= 1;
+			wait1Msec(500);
+		}*/
 		updatePositionValues();
 		clearLCDLine(0);
 		clearLCDLine(1);

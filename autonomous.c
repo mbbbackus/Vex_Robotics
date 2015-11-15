@@ -1,9 +1,18 @@
 void runAuton()
 {
-	launch(78);
-	wait1Msec(4000);
+	launch(60);
+	//normally 75
+	wait1Msec(5000);
+
+	for(int low = 0; low < 3; low++){
+		grab(80);
+		wait1Msec(900);
+		grab(0);
+		wait1Msec(1600);
+	}
 	grab(80);
-	wait1Msec(10000);
-	launch(0);
+	wait1Msec(1500);
 	grab(0);
+	launch(0);
+
 }
