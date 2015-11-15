@@ -1,3 +1,4 @@
+//launches preloaded balls from the starting square
 void runAuton()
 {
 	launch(60);
