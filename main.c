@@ -20,11 +20,14 @@
 
 #include "Vex_Competition_Includes.c"
 
+//the main program includes the code from these four files located within a central folder
 #include "smartMotorLib\SmartMotorLib.c"
 #include "field_centric_control.c"
 #include "motor_functions.c"
 #include "autonomous.c"
 
+//Main user control function
+//includes functions from the SmartMotorLib.c, field_centric_control.c and motor_functions.c
 task usercontrol()
 {
 	SmartMotorRun();
@@ -38,6 +41,7 @@ task usercontrol()
 	}
 }
 
+//Initialize everything required before the autonomous starts
 void pre_auton()
 {
 	bLCDBacklight = true;
@@ -55,6 +59,7 @@ void pre_auton()
 	startTask(lcdtask);
 }
 
+//Run the autonomous function from the autonomous.c file
 task autonomous()
 {
 	runAuton();
