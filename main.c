@@ -1,7 +1,9 @@
 #pragma config(Sensor, in1,    Potent,         sensorPotentiometer)
-#pragma config(Sensor, in3,    BaseGyro,       sensorGyro)
-#pragma config(Sensor, dgtl1,  RightEncoder,   sensorQuadEncoder)
-#pragma config(Sensor, dgtl3,  LeftEncoder,    sensorQuadEncoder)
+#pragma config(Sensor, in3,    BasedGyro,      sensorGyro)
+#pragma config(Sensor, dgtl1,  BackRightEncoder, sensorQuadEncoder)
+#pragma config(Sensor, dgtl3,  BackLeftEncoder, sensorQuadEncoder)
+#pragma config(Sensor, dgtl5,  FrontRightEncoder, sensorQuadEncoder)
+#pragma config(Sensor, dgtl7,  FrontLeftEncoder, sensorQuadEncoder)
 #pragma config(Motor,  port1,           LauncherLeftInside, tmotorVex393_HBridge, openLoop)
 #pragma config(Motor,  port2,           Intake,        tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port3,           BackLeftDrive, tmotorVex393HighSpeed_MC29, openLoop)
@@ -26,24 +28,30 @@
 #include "motor_functions.c"
 #include "autonomous.c"
 
+
 //Main user control function
 //includes functions from the SmartMotorLib.c, field_centric_control.c and motor_functions.c
 task usercontrol()
 {
 	SmartMotorRun();
+	SensorValue[FrontLeftEncoder] = 0;
+	SensorValue[BackLeftEncoder] = 0;
+	SensorValue[FrontRightEncoder] = 0;
+	SensorValue[BackRightEncoder] = 0;
+
 	startTask(launcher);
 	while(1 == 1)
 	{
-		mdrive();
+		bdrive();
 		checkintake();
-		turntable();
-		calibrateButtons();
+		ttable();
 	}
 }
 
 //Initialize everything required before the autonomous starts
 void pre_auton()
 {
+	SensorType[in3] = sensorGyro;
 	bLCDBacklight = true;
 	SmartMotorsInit();
 	SmartMotorsAddPowerExtender(port5,port6,port7,port8);
@@ -62,5 +70,13 @@ void pre_auton()
 //Run the autonomous function from the autonomous.c file
 task autonomous()
 {
-	runAuton();
+	if(SensorValue[Potent] < 1000){
+		//red
+		runAuton();
+	}
+	else if(SensorValue[Potent] > 3000){
+		runProgrammingSkills();
+	}
+	else runAuton();
+
 }

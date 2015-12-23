@@ -1,36 +1,11 @@
-int X2 = 0, Y1 = 0, X1 = 0, threshold = 15;
-
-//calculates the analog stick's axis to identify how far it is from the center
-void deadZoneCheck()
+//basic drive function
+void bdrive()
 {
-	//Create "deadzone" for Y1/Ch3
-	if(abs(vexRT[Ch3]) > threshold)
-		Y1 = vexRT[Ch3];
-	else
-		Y1 = 0;
-	//Create "deadzone" for X1/Ch4
-	if(abs(vexRT[Ch4]) > threshold)
-		X1 = vexRT[Ch4];
-	else
-		X1 = 0;
-	//Create "deadzone" for X2/Ch1
-	if(abs(vexRT[Ch1]) > threshold)
-		X2 = vexRT[Ch1];
-	else
-		X2 = 0;
-}
-
-//basic drive function for the mechanum wheels
-//loops continuously
-void mdrive()
-{
-	deadZoneCheck();
-
 	//Remote Control Commands
-	motor[FrontRightDrive] = Y1 - X2 - X1;
-	motor[BackRightDrive] =  Y1 - X2 + X1;
-	motor[FrontLeftDrive] = Y1 + X2 + X1;
-	motor[BackLeftDrive] =  Y1 + X2 - X1;
+	motor[FrontRightDrive] = vexRT[Ch2];
+	motor[BackRightDrive] = vexRT[Ch2];
+	motor[FrontLeftDrive] = vexRT[Ch3];
+	motor[BackLeftDrive] =  vexRT[Ch3];
 }
 
 //function that controls the intake
@@ -71,48 +46,48 @@ task launcher()
 		if(vexRT[Btn7LXmtr2] == 1 && vexRT[Btn7UXmtr2] == 0 && vexRT[Btn7RXmtr2] == 0 && vexRT[Btn7DXmtr2] == 0){
 			ClearTimer(T1);
 			while(time1[T1] < 1000){
-				motor[LauncherLeftOutside] = -55;
-				motor[LauncherRightOutside] = -55;
-				motor[LauncherLeftInside] = -55;
-				motor[LauncherRightInside] = -55;
+				motor[LauncherLeftOutside] = -60;
+				motor[LauncherRightOutside] = -60;
+				motor[LauncherLeftInside] = -60;
+				motor[LauncherRightInside] = -60;
 			}
 			while(vexRT[Btn7LXmtr2] == 1){
-				motor[LauncherLeftOutside] = -40;
-				motor[LauncherRightOutside] = -40;
-				motor[LauncherLeftInside] = -40;
-				motor[LauncherRightInside] = -40;
+				motor[LauncherLeftOutside] = -45;
+				motor[LauncherRightOutside] = -45;
+				motor[LauncherLeftInside] = -45;
+				motor[LauncherRightInside] = -45;
 			}
 		}
 		//7U -- Medium
 		if(vexRT[Btn7LXmtr2] == 0 && vexRT[Btn7UXmtr2] == 1 && vexRT[Btn7RXmtr2] == 0 && vexRT[Btn7DXmtr2] == 0){
 			ClearTimer(T1);
 			while(time1[T1] < 1000){
-				motor[LauncherLeftOutside] = -62;
-				motor[LauncherRightOutside] = -62;
-				motor[LauncherLeftInside] = -62;
-				motor[LauncherRightInside] = -62;
+				motor[LauncherLeftOutside] = -67;
+				motor[LauncherRightOutside] = -67;
+				motor[LauncherLeftInside] = -67;
+				motor[LauncherRightInside] = -67;
 			}
 			while(vexRT[Btn7UXmtr2] == 1){
-				motor[LauncherLeftOutside] = -47;
-				motor[LauncherRightOutside] = -47;
-				motor[LauncherLeftInside] = -47;
-				motor[LauncherRightInside] = -47;
+				motor[LauncherLeftOutside] = -50;
+				motor[LauncherRightOutside] = -50;
+				motor[LauncherLeftInside] = -50;
+				motor[LauncherRightInside] = -50;
 			}
 		}
 		//7R -- High
 		if(vexRT[Btn7LXmtr2] == 0 && vexRT[Btn7UXmtr2] == 0 && vexRT[Btn7RXmtr2] == 1 && vexRT[Btn7DXmtr2] == 0){
 			ClearTimer(T1);
 			while(time1[T1] < 1000){
-				motor[LauncherLeftOutside] = -66;
-				motor[LauncherRightOutside] = -66;
-				motor[LauncherLeftInside] = -66;
-				motor[LauncherRightInside] = -66;
+				motor[LauncherLeftOutside] = -76;
+				motor[LauncherRightOutside] = -76;
+				motor[LauncherLeftInside] = -76;
+				motor[LauncherRightInside] = -76;
 			}
 			while(vexRT[Btn7RXmtr2] == 1){
-				motor[LauncherLeftOutside] = -55;
-				motor[LauncherRightOutside] = -55;
-				motor[LauncherLeftInside] = -55;
-				motor[LauncherRightInside] = -55;
+				motor[LauncherLeftOutside] = -56;
+				motor[LauncherRightOutside] = -56;
+				motor[LauncherLeftInside] = -56;
+				motor[LauncherRightInside] = -56;
 			}
 		}
 		//7D -- Field-Centric
@@ -124,16 +99,16 @@ task launcher()
 			*/
 			ClearTimer(T1);
 			while(time1[T1] < 1000){
-				motor[LauncherLeftOutside] = -70;
-				motor[LauncherRightOutside] = -70;
-				motor[LauncherLeftInside] = -70;
-				motor[LauncherRightInside] = -70;
+				motor[LauncherLeftOutside] = -83;
+				motor[LauncherRightOutside] = -83;
+				motor[LauncherLeftInside] = -83;
+				motor[LauncherRightInside] = -83;
 			}
 			while(vexRT[Btn7DXmtr2] == 1){
-				motor[LauncherLeftOutside] = -60;
-				motor[LauncherRightOutside] = -60;
-				motor[LauncherLeftInside] = -60;
-				motor[LauncherRightInside] = -60;
+				motor[LauncherLeftOutside] = -65;
+				motor[LauncherRightOutside] = -65;
+				motor[LauncherLeftInside] = -65;
+				motor[LauncherRightInside] = -65;
 			}
 
 		}
@@ -142,7 +117,7 @@ task launcher()
 }
 
 //function that allows for the control of the turntable
-void turntable()
+void ttable()
 {
 	if(vexRT[Btn5UXmtr2] == 0 && vexRT[Btn5DXmtr2] == 0){
 		motor[Turntable] = 0;
@@ -162,33 +137,15 @@ void grab(int power)
 }
 
 //Positive values drive the robot forward, Negative values drive it backward
-void driveStraight(int power)
+void drive(int frontLeft, int frontRight, int backLeft, int backRight)
 {
-	motor[FrontRightDrive] = power;
-	motor[BackRightDrive] =  power;
-	motor[FrontLeftDrive] = power;
-	motor[BackLeftDrive] =  power;
+	motor[FrontRightDrive] = frontRight;
+	motor[BackRightDrive] =  backRight;
+	motor[FrontLeftDrive] = frontLeft;
+	motor[BackLeftDrive] =  backLeft;
 }
 
-//positive values allow the robot to strafe right, Negative values allow the robot to strafe left
-void strafe(int power)
-{
-	motor[FrontRightDrive] = -power;
-	motor[BackRightDrive] =  power;
-	motor[FrontLeftDrive] = power;
-	motor[BackLeftDrive] =  -power;
-}
-
-//Positive values rotate the robot right, Negative values rotate the robot left
-void rotate(int power)
-{
-	motor[FrontRightDrive] = -power;
-	motor[BackRightDrive] =  -power;
-	motor[FrontLeftDrive] = power;
-	motor[BackLeftDrive] =  power;
-}
-
-//Positive values rotate the launcher right, Negative values rotate the launcher left 
+//Positive values rotate the launcher right, Negative values rotate the launcher left
 void turnLauncher(int power)
 {
 	motor[Turntable] = power;
