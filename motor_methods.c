@@ -76,11 +76,11 @@ task launcher_listener()
 {
 	while(1==1){
 		if(vexRT[Btn8U] == 1){
- 			launcherPower += 1;
+ 			launcherPowerVar += 1;
 			wait1Msec(500);
 		}
 		else if(vexRT[Btn8D] == 1){
-			launcherPower -= 1;
+			launcherPowerVar -= 1;
 			wait1Msec(500);
 		}
 		//None pressed
@@ -89,7 +89,7 @@ task launcher_listener()
 			motor[LauncherRightOutside] = 0;
 			motor[LauncherLeftInside] =   0;
 			motor[LauncherRightInside] =  0;
-			launcherPower = 55;
+			launcherPowerVar = 55;
 		}
 		//7L -- Lowest
 		if(vexRT[Btn7LXmtr2] == 1 && vexRT[Btn7UXmtr2] == 0 && vexRT[Btn7RXmtr2] == 0 && vexRT[Btn7DXmtr2] == 0 && vexRT[Btn8DXmtr2] == 0){

@@ -31,8 +31,8 @@
 //the main program includes the code from these four files located within a central folder
 #include "smartMotorLib\SmartMotorLib.c"
 #include "variables.c"
-#include "sensor_methods.c"
 #include "motor_methods.c"
+#include "sensor_methods.c"
 #include "autonomous.c"
 #include "lcd_code.c"
 
@@ -72,11 +72,11 @@ void pre_auton()
 //Run the autonomous function from the autonomous.c file
 task autonomous()
 {
-	if(SensorValue[Potent] < 1000){
+	if(SensorValue[Potent] < redVal){
 		//red
 		runAutonRed();
 	}
-	else if(SensorValue[Potent] > 3000){
+	else if(SensorValue[Potent] > blueVal){
 		runAutonBlu();
 	}
 	else runProgrammingSkills();
